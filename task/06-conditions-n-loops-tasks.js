@@ -30,7 +30,14 @@
  *
  */
 function getFizzBuzz(num) {
-    throw new Error('Not implemented');
+    if (num % 3 === 0) {
+        if (num % 5 === 0){return 'FizzBuzz';}
+        else{return 'Fizz';}    
+    }
+    else {
+        if (num % 5 === 0){return 'Buzz';}
+        else{return num;}    
+    }    
 }
 
 
@@ -46,7 +53,12 @@ function getFizzBuzz(num) {
  *   10 => 3628800
  */
 function getFactorial(n) {
-    throw new Error('Not implemented');
+    let result = 1;
+    let i;
+    for ( i=2; i<=n; i++){
+        result = result*i;
+    }
+    return result;
 }
 
 
@@ -63,7 +75,12 @@ function getFactorial(n) {
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
 function getSumBetweenNumbers(n1, n2) {
-    throw new Error('Not implemented');
+    let result=n1;
+    let i;
+    for (i = n1+1; i<=n2; i++){
+        result+=i;
+    }
+    return result;
 }
 
 
@@ -82,7 +99,8 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,10,10 =>  true
  */
 function isTriangle(a,b,c) {
-    throw new Error('Not implemented');
+    if ((a+b>c)&&(a+c>b)&&(b+c>a)) {return true;}
+    else {return false;}
 }
 
 
@@ -119,7 +137,7 @@ function isTriangle(a,b,c) {
  *  
  */
 function doRectanglesOverlap(rect1, rect2) {
-    throw new Error('Not implemented');
+    return (rect1.left + rect1.width > rect2.left && rect1.top + rect1.height > rect2.top );
 }
 
 
@@ -150,7 +168,8 @@ function doRectanglesOverlap(rect1, rect2) {
  *   
  */
 function isInsideCircle(circle, point) {
-    throw new Error('Not implemented');
+    if (Math.hypot((circle.center.x-point.x), (circle.center.y-point.y)) < circle.radius) {return true;}
+    else {return false;}
 }
 
 
@@ -166,7 +185,16 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-    throw new Error('Not implemented');
+    let i;
+    let j;
+    for (i = 0; i<str.length; i++){
+        let kol = 1;
+        for (j = 0; j < str.length; j++){
+            if ((str[i] === str[j])&& ( i != j )) { kol ++;}
+        }
+        if ( kol == 1){ return str[i];}    
+        }
+    return null;
 }
 
 
@@ -192,7 +220,14 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-    throw new Error('Not implemented');
+    let result;
+    if (isStartIncluded) { result= "["; }
+        else { result ="("; }
+    if (a<b) {result = result + a.toString()+", "+ b.toString(); }
+        else  {result = result + b.toString() +", "+ a.toString(); }
+    if (isEndIncluded) { result = result +"]"; }
+        else { result = result +")"; }   
+    return result;
 }
 
 
@@ -209,7 +244,11 @@ function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
  * 'noon' => 'noon'
  */
 function reverseString(str) {
-    throw new Error('Not implemented');
+    let result ="";
+    for (let rigth = str.length - 1; rigth>=0; rigth--){
+        result= result+str[rigth];
+    }
+    return result;
 }
 
 
@@ -226,7 +265,14 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-    throw new Error('Not implemented');
+    let result = 0, temp;
+    while (num>=1)
+    {
+        temp=num % 10;
+        result =(result+temp)*10;
+        num  = Math.floor(num / 10);
+    }
+   return result/10; 
 }
 
 
@@ -251,7 +297,26 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(ccn) {
-    throw new Error('Not implemented');
+    let arr=[];
+    let checksum=0;
+    ccn = String(ccn);
+    arr = Array.from(ccn);
+    for ( let i=arr.length-1; i>=0; i--){
+        arr[i] =  Number(arr[i] );
+        if ((arr.length-i) % 2 == 0){ 
+            arr[i]*=2; 
+            if (arr[i]>9) {
+                arr[i]-=9;
+            }
+        }
+        checksum+=arr[i];
+    }
+    if (checksum % 10 == 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 
@@ -270,7 +335,19 @@ function isCreditCardNumber(ccn) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-    throw new Error('Not implemented');
+    function countsum(num){  
+        let arr = [];
+        arr = Array.from( String(num) );
+        arr = arr.map((element) => Number(element));
+        sum =arr.reduce(function(a,b){ return a+b } );
+        return sum;
+    }
+
+    let sum=num;
+    do {
+        sum = countsum(sum);
+    } while (sum>9);
+    return sum;  
 }
 
 
@@ -296,7 +373,20 @@ function getDigitalRoot(num) {
  *   '{[(<{[]}>)]}' = true 
  */
 function isBracketsBalanced(str) {
-    throw new Error('Not implemented');
+    let brackets = new Map([  [']', '['], [')', '('],  ['}', '{'],  ['>', '<'] ]);
+    let stack = new Array();
+    let i;
+    for ( i = 0 ; i < str.length; i++ ){
+        if ( brackets.has(str[i]) ){
+            if (stack[ stack.length - 1 ] != brackets.get(str[i]))
+                return false;
+            stack.pop();
+        } 
+        else {
+            stack.push(str[i]);
+        }
+    }
+    return stack.length == 0;
 }
 
 
@@ -356,7 +446,8 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-    throw new Error('Not implemented');
+    let result = num.toString(n);
+    return result;
 }
 
 
@@ -373,7 +464,32 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-    throw new Error('Not implemented');
+   /* let result = '';
+    let curr = '';
+    let i;
+    let end = false;
+    let equal;
+    while (!end){
+        let j;
+        equal = true;
+        for (j = 0; j < pathes.length-1; j++){
+            if ((pathes[j].length < i)||(pathes[j+1].length < i)){
+                end = true;
+                return result;
+            }
+
+            else{
+                if (pathes[j] !== pathes[j+1]) equal = false;
+            }
+        }
+        if (equal) curr += pathes[j];
+        if (pathes[j] === '/'){
+            result+=curr;
+            curr ='';
+        }
+        i++;
+    }*/
+     throw new Error('Not implemented');
 }
 
 
